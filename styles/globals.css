@@ -25,3 +25,13 @@ body {
     background-position-x: 5000vw;
   }
 }
+
+.col-left {
+  padding: 20px;
+  text-align: justify;
+  
+}
+.col-right {
+  padding: 20px;
+  text-align: justify;
+}
