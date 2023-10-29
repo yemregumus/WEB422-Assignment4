@@ -5,35 +5,25 @@ import { useForm } from 'react-hook-form';
 
 export default function AdvancedSearch() {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const router = useRouter(); // Move the useRouter hook here
+  const router = useRouter();
 
   const submitForm = (data) => {
-    // Initialize an empty queryString
-    let queryString = '';
+    let queryString = 'searchBy=true';
 
-    // Append the searchBy parameter
-    queryString += 'searchBy=true';
+    queryString += `&searchBy=${data.searchBy}`;
 
-    // Append the geoLocation parameter if it's not null or undefined
     if (data.geoLocation) {
       queryString += `&geoLocation=${data.geoLocation}`;
     }
 
-    // Append the medium parameter if it's not null or undefined
     if (data.medium) {
       queryString += `&medium=${data.medium}`;
     }
 
-    // Append the isOnView parameter
     queryString += `&isOnView=${data.isOnView}`;
-
-    // Append the isHighlight parameter
     queryString += `&isHighlight=${data.isHighlight}`;
-
-    // Append the q parameter
     queryString += `&q=${data.q}`;
 
-    // Redirect the user to the "/artwork" route with the generated queryString
     router.push(`/artwork?${queryString}`);
   };
 
@@ -50,7 +40,6 @@ export default function AdvancedSearch() {
       <Row>
         <Col>
           <Form.Group className={`mb-3 ${errors.q ? 'is-invalid' : ''}`}>
-            <br />
             <Form.Label>Search Query</Form.Label>
             <Form.Control
               type="text"
@@ -63,21 +52,48 @@ export default function AdvancedSearch() {
         </Col>
       </Row>
       <Row>
-        <Col>
-          <Form.Group className={`mb-3 ${errors.q ? 'is-invalid' : ''}`}>
-            <br />
-            <Form.Label>Search Query</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder=""
-              name="q"
-              {...register('q', { required: true })}
-            />
-            {errors.q && <div className="invalid-feedback">This field is required.</div>}
+        <Col md={4}>
+          <Form.Label>Search By</Form.Label>
+          <Form.Select name="searchBy" className="mb-3" {...register('searchBy')}>
+            <option value="title">Title</option>
+            <option value="tags">Tags</option>
+            <option value="artistOrCulture">Artist or Culture</option>
+          </Form.Select>
+        </Col>
+        <Col md={4}>
+          <Form.Group className="mb-3">
+            <Form.Label>Geo Location</Form.Label>
+            <Form.Control type="text" placeholder="" name="geoLocation" {...register('geoLocation')} />
+            <Form.Text className="text-muted">
+              Case Sensitive String (e.g., &ldquo;Europe,&rdquo;, &ldquo;France,&rdquo;, &ldquo;Paris,&rdquo;, &ldquo;China,&rdquo;, &ldquo;New York,&rdquo;, etc.), with multiple values separated by the | operator            </Form.Text>
+          </Form.Group>
+        </Col>
+        <Col md={4}>
+          <Form.Group className="mb-3">
+            <Form.Label>Medium</Form.Label>
+            <Form.Control type="text" placeholder="" name="medium" {...register('medium')} />
+            <Form.Text className="text-muted">
+              Case Sensitive String (e.g., &ldquo;Ceramics,&rdquo;, &ldquo;Furniture,&rdquo;, &ldquo;Paintings,&rdquo;, &ldquo;Sculpture,&rdquo;, &ldquo;Textiles,&rdquo;, etc.), with multiple values separated by the | operator
+            </Form.Text>
           </Form.Group>
         </Col>
       </Row>
-      {/* Other form fields go here */}
+      <Row>
+        <Col>
+          <Form.Check
+            type="checkbox"
+            label="Highlighted"
+            name="isHighlight"
+            {...register('isHighlight')}
+          />
+          <Form.Check
+            type="checkbox"
+            label="Currently on View"
+            name="isOnView"
+            {...register('isOnView')}
+          />
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Button variant="success" type="submit">
