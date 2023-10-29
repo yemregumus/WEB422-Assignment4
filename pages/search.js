@@ -62,6 +62,21 @@ export default function AdvancedSearch() {
           </Form.Group>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <Form.Group className={`mb-3 ${errors.q ? 'is-invalid' : ''}`}>
+            <br />
+            <Form.Label>Search Query</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder=""
+              name="q"
+              {...register('q', { required: true })}
+            />
+            {errors.q && <div className="invalid-feedback">This field is required.</div>}
+          </Form.Group>
+        </Col>
+      </Row>
       {/* Other form fields go here */}
       <Row>
         <Col>
