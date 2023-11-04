@@ -8,24 +8,26 @@ export default function AdvancedSearch() {
   const router = useRouter();
 
   const submitForm = (data) => {
-    let queryString = 'searchBy=true';
 
-    queryString += `&searchBy=${data.searchBy}`;
+    let queryString = '';
 
-    if (data.geoLocation) {
-      queryString += `&geoLocation=${data.geoLocation}`;
-    }
+    queryString += 'searchBy=true';
+  
+    queryString +=
+    data.searchBy === 'title' ? '&title=true' :
+    data.searchBy === 'tags' ? '&tags=true' :
+    data.searchBy === 'artistOrCulture' ? '&artistOrCulture=true' : '';
 
-    if (data.medium) {
-      queryString += `&medium=${data.medium}`;
-    }
+    queryString += data.geoLocation ? `&geoLocation=${encodeURIComponent(data.geoLocation)}` : '';
+    queryString += data.medium ? `&medium=${encodeURIComponent(data.medium)}` : '';
 
     queryString += `&isOnView=${data.isOnView}`;
     queryString += `&isHighlight=${data.isHighlight}`;
-    queryString += `&q=${data.q}`;
+    queryString += `&q=${encodeURIComponent(data.q)}`;
+  
 
     router.push(`/artwork?${queryString}`);
-  };
+  }; 
 
   const onFormSubmit = (data) => {
     if (errors.q) {
