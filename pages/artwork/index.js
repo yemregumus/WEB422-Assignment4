@@ -4,10 +4,11 @@ import Error from "next/error";
 import { Row, Col, Pagination, Card } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import ArtworkCard from "../components/ArtworkCard";
+import validObjectIDList from '@/public/data/validObjectIDList.json'
+
+const PER_PAGE = 12;
 
 export default function Artwork(){
-   const PER_PAGE = 12;
- 
    const [artworkList, setArtworkList] = useState(null);
    const [page, setPage] = useState(1);
  
@@ -32,10 +33,15 @@ export default function Artwork(){
    useEffect(() => {
      if (data) {
        const results = [];
-       for (let i = 0; i < data?.objectIDs?.length; i += PER_PAGE) {
-         const chunk = data?.objectIDs.slice(i, i + PER_PAGE);
-         results.push(chunk);
-       }
+       
+       let filteredResults = validObjectIDList.objectIDs.filter((x) =>
+        data.objectIDs?.includes(x)
+      )
+       
+      for (let i = 0; i < filteredResults.length; i += PER_PAGE) {
+        const chunk = filteredResults.slice(i, i + PER_PAGE)
+        results.push(chunk)
+      }
        setArtworkList(results);
        setPage(1);
      }
