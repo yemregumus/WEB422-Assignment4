@@ -11,7 +11,6 @@
 import React from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 
-
 function Home() {
   return (
     <div>
